@@ -195,6 +195,9 @@ var html = `<!doctype html>
   <body>
     <main>
 			<article>
+			<form action="/" method="GET">
+				<input type="submit" value="Randomize 🔀">
+			</form>
 				<h1>
 					The number of employees at 
 					<mark>{{.Company.Name}}</mark> 
@@ -204,7 +207,6 @@ var html = `<!doctype html>
 					{{if gt .Times 1.0}}🤯{{else}}😐{{end}}
 				</h1>
 			</article>
-			<a href="/" role="button">Another</a>
 		</main>
   </body>
 </html>
