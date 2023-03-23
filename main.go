@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"math/rand"
 	"net/http"
 	"os"
 	"strings"
@@ -36,7 +37,7 @@ func main() {
 
 	http.HandleFunc("/", app.Handler)
 
-	fmt.Println("Listening on port", port)
+	fmt.Printf("Listening on http://0.0.0.0:%s\n", port)
 	http.ListenAndServe(":"+port, nil)
 }
 
@@ -75,8 +76,68 @@ type App struct {
 	template    *template.Template
 }
 
+func parseRequestPath(path string) (string, string, bool) {
+	return strings.Cut(path[1:], "/")
+}
+
 func (app *App) Handler(w http.ResponseWriter, r *http.Request) {
-	pn, cn, found := strings.Cut(r.URL.Path[1:], "/")
+	switch r.URL.Path {
+	case "/":
+		app.index(w, r)
+	default:
+		app.show(w, r)
+	}
+}
+
+func (app *App) randomLocations() []string {
+	var locations []string
+
+	for l := range app.populations {
+		locations = append(locations, l)
+	}
+
+	rand.Shuffle(len(locations), func(i, j int) {
+		locations[i], locations[j] = locations[j], locations[i]
+	})
+
+	return locations
+}
+
+func (app *App) randomCompaniesWithMoreEmployeesThan(n int) []string {
+	var companies []string
+
+	for name, c := range app.companies {
+		if c.Employees > n {
+			companies = append(companies, name)
+		}
+	}
+
+	rand.Shuffle(len(companies), func(i, j int) {
+		companies[i], companies[j] = companies[j], companies[i]
+	})
+
+	return companies
+}
+
+func (app *App) randomPath() string {
+	location := app.randomLocations()[0]
+	population := app.populations[location]
+
+	companies := app.randomCompaniesWithMoreEmployeesThan(population)
+
+	if len(companies) == 0 {
+		return "/Gotland/Accenture"
+	}
+
+	return fmt.Sprintf("/%s/%s", strings.Title(location), strings.Title(companies[0]))
+}
+
+func (app *App) index(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, app.randomPath(), http.StatusFound)
+}
+
+func (app *App) show(w http.ResponseWriter, r *http.Request) {
+	pn, cn, found := parseRequestPath(r.URL.Path)
 	if !found {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -94,16 +155,14 @@ func (app *App) Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	f := float64(c.Employees) / float64(p)
-
-	// fmt.Fprintf(w, format, c.Name, pn, f)
-
-	app.template.Execute(w, Value{
+	v := Value{
 		Company:    c,
 		Population: p,
 		Location:   pn,
-		Times:      f,
-	})
+		Times:      float64(c.Employees) / float64(p),
+	}
+
+	app.template.Execute(w, v)
 }
 
 type Value struct {
@@ -145,6 +204,7 @@ var html = `<!doctype html>
 					{{if gt .Times 1.0}}🤯{{else}}😐{{end}}
 				</h1>
 			</article>
+			<a href="/" role="button">Another</a>
 		</main>
   </body>
 </html>
