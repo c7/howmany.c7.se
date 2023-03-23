@@ -108,6 +108,12 @@ func (app *App) randomCompaniesWithMoreEmployeesThan(n int) []string {
 
 	for name, c := range app.companies {
 		if c.Employees > n {
+			name = strings.Title(name)
+
+			if len(name) == len(c.Name) {
+				name = c.Name
+			}
+
 			companies = append(companies, name)
 		}
 	}
@@ -129,7 +135,7 @@ func (app *App) randomPath() string {
 		return "/Gotland/Accenture"
 	}
 
-	return fmt.Sprintf("/%s/%s", strings.Title(location), strings.Title(companies[0]))
+	return fmt.Sprintf("/%s/%s", strings.Title(location), strings.ReplaceAll(companies[0], " ", "-"))
 }
 
 func (app *App) index(w http.ResponseWriter, r *http.Request) {
@@ -158,7 +164,7 @@ func (app *App) show(w http.ResponseWriter, r *http.Request) {
 	v := Value{
 		Company:    c,
 		Population: p,
-		Location:   pn,
+		Location:   strings.ReplaceAll(pn, "-", " "),
 		Times:      float64(c.Employees) / float64(p),
 	}
 
