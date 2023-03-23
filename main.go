@@ -197,13 +197,24 @@ var html = `<!doctype html>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.classless.min.css">
 		<title>How many?</title>
-  </head>
+  	<style>
+			:root {
+  			--primary: #546e7a;
+  			--primary-hover: #607d8b;
+  			--primary-focus: rgba(84, 110, 122, 0.25);
+  			--primary-inverse: #FFF;
+				--typography-spacing-vertical: 0;
+			}
+		</style>
+	</head>
   <body>
     <main>
 			<article>
-			<form action="/" method="GET">
-				<input type="submit" value="Randomize 🔀">
-			</form>
+				<header>
+					<form action="/" method="GET">
+						<input type="submit" value="Randomize 🔀">
+					</form>
+				</header>
 				<h1>
 					The number of employees at 
 					<mark>{{.Company.Name}}</mark> 
@@ -212,26 +223,28 @@ var html = `<!doctype html>
 					<u>{{printf "%.2f" .Times}} times</u>
 					{{if gt .Times 1.0}}🤯{{else}}😐{{end}}
 				</h1>
-				<table role="grid">
-					<tbody>
-						<tr>
-							<th scope="row" width="1">#️</th>
-							<td>{{.Company.Rank}}</td>
-						</tr>
-						<tr>
-							<th scope="row">📈</th>
-							<td>{{.Company.Symbol}}</td>
-						</tr>
-						<tr>
-							<th scope="row">👥</th>
-							<td>{{.Company.Employees}}</td>
-						</tr>
-						<tr>
-							<th scope="row">🌎</th>
-							<td>{{.Company.Country}}</td>
-						</tr>
-					</tbody>
-				</table>
+				<footer>
+					<table role="grid">
+						<tbody>
+							<tr>
+								<th scope="row" width="1">#️</th>
+								<td>{{.Company.Rank}}</td>
+							</tr>
+							<tr>
+								<th scope="row">📈</th>
+								<td>{{.Company.Symbol}}</td>
+							</tr>
+							<tr>
+								<th scope="row">👥</th>
+								<td>{{.Company.Employees}}</td>
+							</tr>
+							<tr>
+								<th scope="row">🌎</th>
+								<td>{{.Company.Country}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</footer>
 			</article>
 		</main>
   </body>
