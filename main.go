@@ -219,7 +219,8 @@ var html = `<!doctype html>
 					The number of employees at 
 					<mark>{{.Company.Name}}</mark> 
 					equals the population of 
-					<mark>{{.Location}}</mark>… 
+					<mark>{{.Location}}</mark>…
+					<br>
 					<u>{{printf "%.2f" .Times}} times</u>
 					{{if gt .Times 1.0}}🤯{{else}}😐{{end}}
 				</h1>
