@@ -206,6 +206,26 @@ var html = `<!doctype html>
 					<u>{{printf "%.2f" .Times}} times</u>
 					{{if gt .Times 1.0}}🤯{{else}}😐{{end}}
 				</h1>
+				<table role="grid">
+					<tbody>
+						<tr>
+							<th scope="row" width="1">#️</th>
+							<td>{{.Company.Rank}}</td>
+						</tr>
+						<tr>
+							<th scope="row">📈</th>
+							<td>{{.Company.Symbol}}</td>
+						</tr>
+						<tr>
+							<th scope="row">👥</th>
+							<td>{{.Company.Employees}}</td>
+						</tr>
+						<tr>
+							<th scope="row">🌎</th>
+							<td>{{.Company.Country}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</article>
 		</main>
   </body>
