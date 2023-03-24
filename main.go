@@ -226,21 +226,19 @@ var html = `<!doctype html>
 				</h1>
 				<footer>
 					<table role="grid">
+						<thead>
+							<tr>
+								<th scope="col" width="96">🔢</th>
+								<th scope="col" width="128">📈</th>
+								<th scope="col" width="132">👥</th>
+								<th scope="col">🌎</th>
+							</tr>
+						</thead>
 						<tbody>
 							<tr>
-								<th scope="row" width="1">#️</th>
 								<td>{{.Company.Rank}}</td>
-							</tr>
-							<tr>
-								<th scope="row">📈</th>
 								<td>{{.Company.Symbol}}</td>
-							</tr>
-							<tr>
-								<th scope="row">👥</th>
 								<td>{{.Company.Employees}}</td>
-							</tr>
-							<tr>
-								<th scope="row">🌎</th>
 								<td>{{.Company.Country}}</td>
 							</tr>
 						</tbody>
