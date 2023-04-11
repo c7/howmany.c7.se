@@ -194,6 +194,11 @@ var html = `<!doctype html>
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8">
+		<meta content="The number of employees at {{.Company.Name}} equals the population of {{.Location}} {{printf "%.2f" .Times}} times {{if gt .Times 1.0}}🤯{{else}}😐{{end}}" property="og:description">
+		<meta name="twitter:label1" content="Employees of {{.Company.Name}}" />
+		<meta name="twitter:data1" content="{{.Company.Employees}}" />
+		<meta name="twitter:label2" content="Population of {{.Location}}" />
+		<meta name="twitter:data2" content="{{.Population}}" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.classless.min.css">
 		<title>How many?</title>
